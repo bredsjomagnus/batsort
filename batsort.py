@@ -5,18 +5,12 @@ import os
 import glob
 from loggingconfig import *
 import pprint
+pp = pprint.PrettyPrinter(indent=4)
 from functions import *
 import shutil
-from datetime import datetime
 
-dt = datetime.now()
-ts = datetime.timestamp(dt)
-date_time = datetime.fromtimestamp(ts)
-str_date_time = date_time.strftime("%Y%m%d_%H_%M_%S")
-print(str_date_time)
 
-pp = pprint.PrettyPrinter(indent=4)
-
+str_date_time = get_date_str("%Y%m%d_%H_%M_%S")
 
 this_path = os.getcwd()
 
@@ -42,9 +36,7 @@ def main():
         
     wav_files= glob.glob('batsounds/*.wav')
 
-    # print(wav_files[0][10:])
     wav_files = [file_path[10:] for file_path in wav_files]
-    # print(wav_files)
     
     logg_content:dict = {}
     error_content:dict = {}
@@ -53,12 +45,11 @@ def main():
             if value in wav_files:
                 this_file_path = this_path+"/batsounds/"+value
                 to_file_path = this_path+"/batcategories/"+key+"/"+value
-                # print(f"this_file_path: {this_file_path}")
-                # print(f"to_file_path: {to_file_path}")
+
                 try:
                     shutil.copyfile(this_file_path, to_file_path)
                     logging.info("{} --> {}".format(value, key))
-                    # logg_content.append([value, key])
+
                     if key in logg_content:
                         logg_content[key].append(value)
                     else:
@@ -73,14 +64,6 @@ def main():
                     else:
                         error_content[key] = []
                         error_content[key].append(value)
-
-
-    # print("LOGG_CONTENT:")
-    # pp.pprint(logg_content)
-    
-    # print("ERROR_CONTENT")
-    # # pp.pprint(error_content)
-    # print(len(error_content))
 
     try:
         if len(logg_content) > 0:

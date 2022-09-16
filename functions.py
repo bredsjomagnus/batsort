@@ -1,3 +1,5 @@
+from datetime import datetime
+
 
 def get_unique_sorts(df, column_name):
     sorts = []
@@ -34,3 +36,9 @@ def prepare_dict_for_df(_dict):
                 _dict[key].append("")
     
     return _dict
+
+def get_date_str(date_format):
+    dt = datetime.now()
+    ts = datetime.timestamp(dt)
+    date_time = datetime.fromtimestamp(ts)
+    return date_time.strftime(date_format)
